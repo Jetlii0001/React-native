@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React Native Учебный Комплекс — от нуля до готового приложения</title>
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --card: #14161a;
+      --card-2: #1b1f24;
+      --accent: #ffcc00;
+      --accent-2: #00c2ff;
+      --text: #f5f7fa;
+      --text-2: #b8c0cc;
+      --text-3: #7b8594;
+      --border: #2a2f39;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .layout {
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, #0b0c0f 0%, #111317 100%);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .brand p {
+      color: var(--text-2);
+      font-size: 13px;
+    }
+
+    .nav a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--text-2);
+      text-decoration: none;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .nav a:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .content {
+      padding: 32px 40px;
+      margin-left: 300px;
+      background: radial-gradient(1200px 600px at 10% 0%, rgba(255, 204, 0, 0.08), transparent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #111317, #1b1f24);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 50px var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .hero .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 204, 0, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card h4 { margin-bottom: 6px; }
+    .card p { color: var(--text-2); font-size: 14px; }
+
+    section {
+      margin: 32px 0;
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    section h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    section h4 {
+      margin-top: 18px;
+      font-size: 18px;
+    }
+
+    p, li {
+      color: var(--text-2);
+      font-size: 15px;
+    }
+
+    code {
+      background: #0f1216;
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--accent);
+    }
+
+    pre {
+      margin: 12px 0;
+      background: #0f1216;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      overflow-x: auto;
+      color: #d0d6e0;
+      position: relative;
+    }
+
+    .code-wrapper {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    details {
+      background: #0f1216;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: #0f1216;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 12px 0;
+      color: var(--text);
+    }
+
+    .note {
+      border-left: 4px solid var(--accent-2);
+      background: #0f1216;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 12px 0;
+      color: var(--text);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .table th, .table td {
+      border: 1px solid var(--border);
+      padding: 10px;
+      text-align: left;
+    }
+
+    .table th {
+      color: var(--text);
+      background: #0f1216;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar { position: relative; width: auto; height: auto; }
+      .content { margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>RN Учебный Комплекс</h1>
+        <p>От нуля до готового приложения</p>
+      </div>
+      <nav class="nav">
+        <a href="#intro">Введение</a>
+        <a href="#env">Окружение</a>
+        <a href="#structure">Структура</a>
+        <a href="#screens">Экраны</a>
+        <a href="#state">Состояние</a>
+        <a href="#api">API</a>
+        <a href="#movies">Фильмотека</a>
+        <a href="#design">Дизайн</a>
+        <a href="#final">Итог</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="hero" id="intro">
+        <div class="pill">🔥 Полный курс</div>
+        <h2>React Native — полный путь: от базы до готового приложения</h2>
+        <p>
+          Это масштабный учебный комплекс, который объясняет каждую деталь: 
+          от первых экранов до полноценной фильмотеки с максимальной информативностью.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h4>✅ Заглушка</h4>
+            <p>Чистая база для обучения: экраны, навигация, состояние, API.</p>
+          </div>
+          <div class="card">
+            <h4>✅ Фильмотека</h4>
+            <p>Пром‑уровень: тренды, актеры, трейлеры, отзывы, рекомендации.</p>
+          </div>
+          <div class="card">
+            <h4>✅ UI/UX</h4>
+            <p>Современный дизайн с секциями, каруселями, Hero‑блоком и анимациями.</p>
+          </div>
+        </div>
+      </div>
+
+      <section id="env">
+        <h3>Подготовка окружения</h3>
+        <p>Ниже — проверенные версии, использованные при создании проекта.</p>
+        <table class="table">
+          <tr><th>Инструмент</th><th>Версия</th></tr>
+          <tr><td>Node.js</td><td>v22.21.1</td></tr>
+          <tr><td>Expo SDK</td><td>^54.0.31</td></tr>
+          <tr><td>React</td><td>19.1.0</td></tr>
+          <tr><td>React Native</td><td>0.81.5</td></tr>
+          <tr><td>Expo Router</td><td>~6.0.21</td></tr>
+          <tr><td>Zustand</td><td>^4.4.7</td></tr>
+        </table>
+        <div class="callout">
+          Установи Node.js, Expo CLI и Expo Go. Для Android — Android Studio. Для iOS — Xcode (macOS).
+        </div>
+        <details>
+          <summary>Что делать, если установка не проходит</summary>
+          <p>Проверь версию Node.js, переустанови зависимости и убедись, что терминал видит команды <code>node</code> и <code>npm</code>.</p>
+        </details>
+        <pre>node --version
+npm --version
+expo --version</pre>
+      </section>
+
+      <section id="structure">
+        <h3>Структура проекта</h3>
+        <pre>app/
+  _layout.js
+  index.js
+  profile.js
+  details.js
+  api-example.js
+  movies/
+    index.js
+    search.js
+    [id].js
+    favorites.js
+    recommendations.js
+    settings.js</pre>
+        <p>Expo Router строит маршруты на основе файлов — это упрощает навигацию.</p>
+      </section>
+
+      <section id="screens">
+        <h3>Экраны и навигация</h3>
+        <p>В заглушке мы учимся экранным переходам, а в фильмотеке используем динамические роуты.</p>
+        <pre>router.push('/movies/123?type=movie')</pre>
+      </section>
+
+      <section id="state">
+        <h3>Состояние и Zustand</h3>
+        <pre>const { count, increment } = useCounterStore();</pre>
+        <p>Zustand дает простое управление глобальными состояниями без Redux.</p>
+      </section>
+
+      <section id="api">
+        <h3>API и запросы</h3>
+        <p>Мы используем TMDB и формируем полноценные данные: актеры, трейлеры, отзывы.</p>
+        <pre>const data = await fetch('/movie/550?append_to_response=credits,videos')</pre>
+      </section>
+
+      <section id="movies">
+        <h3>Фильмотека</h3>
+        <p>Структура фильмотеки:</p>
+        <ul>
+          <li>Hero‑секция с трендом недели</li>
+          <li>Секции: тренды, топ, новинки, сериалы</li>
+          <li>Поиск с фильтрами</li>
+          <li>Детальная страница с вкладками</li>
+          <li>Избранное / Смотреть позже / Просмотрено</li>
+          <li>AI‑рекомендации</li>
+        </ul>
+        <details>
+          <summary>Как устроена главная страница</summary>
+          <p>Главная собирается из секций: тренды, топ‑рейтинг, новинки, сериалы, подборки и AI‑рекомендации.</p>
+        </details>
+      </section>
+
+      <section id="design">
+        <h3>Дизайн и UX</h3>
+        <p>Дизайн вдохновлен современными продуктами: контраст, карточки, карусели, четкие секции.</p>
+        <div class="note">Визуальная структура повышает читабельность и вовлеченность.</div>
+      </section>
+
+      <section id="final">
+        <h3>Итог</h3>
+        <p>Ты получил полноценный учебный комплекс и проект уровня продакшн‑качества.</p>
+        <div class="callout">Теперь можно развивать фильмотеку и масштабировать её до коммерческого продукта.</div>
+      </section>
+    </main>
+  </div>
+  <script>
+    // Добавляем кнопку копирования для всех блоков кода
+    document.querySelectorAll('pre').forEach((pre) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Скопировать';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.innerText);
+          btn.textContent = 'Готово';
+          setTimeout(() => (btn.textContent = 'Скопировать'), 1200);
+        } catch (e) {
+          btn.textContent = 'Ошибка';
+          setTimeout(() => (btn.textContent = 'Скопировать'), 1200);
+        }
+      });
+      wrapper.appendChild(btn);
+    });
+
+    // Подсветка активного пункта меню при скролле
+    const sections = Array.from(document.querySelectorAll('section, .hero'));
+    const navLinks = Array.from(document.querySelectorAll('.nav a'));
+
+    const activateLink = () => {
+      const scrollPos = window.scrollY + 120;
+      let currentId = '';
+      sections.forEach((sec) => {
+        const top = sec.offsetTop;
+        if (scrollPos >= top) currentId = sec.id;
+      });
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        link.style.background = href === `#${currentId}` ? '#1b1f24' : '';
+        link.style.color = href === `#${currentId}` ? '#f5f7fa' : '';
+      });
+    };
+
+    window.addEventListener('scroll', activateLink);
+    activateLink();
+  </script>
+</body>
+</html>
